@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isaías 41:10 - Promesa</title>
+    <style>
+        body {
+            background-color: #2c1e1e;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+        }
+        canvas {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            cursor: pointer;
+            opacity: 0; /* Comienza invisible para efecto suave */
+            transition: opacity 2s ease-in;
+        }
+        
+        /* PANTALLA DE INICIO (Overlay) */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: #d4c5a3;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        #overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-family: 'Times New Roman', serif;
+            color: #f5edc0;
+        }
+        
+        #overlay p {
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="overlay">
+        <h1>Dios tiene una palabra para ti</h1>
+        <p>Toca la pantalla para recibirla</p>
+    </div>
+
+    <canvas id="bibleCanvas" width="800" height="600"></canvas>
+    
+    <!-- REPRODUCTOR DE MÚSICA -->
+    <!-- Asegúrate de que tu archivo se llame 'musica.mp3' -->
+    <audio id="audioPlayer" loop>
+        <source src="musica.mp3" type="audio/mp3">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('bibleCanvas');
+        const ctx = canvas.getContext('2d');
+        const audio = document.getElementById('audioPlayer');
+        const overlay = document.getElementById('overlay');
+        let isPlaying = false;
+
+        // --- Configuración del Texto ---
+        const verseTitle = "Isaías 41:10";
+        const verseText = "No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo; siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.";
+        const footerText = "Amén.";
+
+        // --- Lógica de Inicio ---
+        overlay.addEventListener('click', function() {
+            overlay.classList.add('hidden');
+            canvas.classList.add('visible');
+            
+            // Iniciar música
+            audio.play().then(() => {
+                isPlaying = true;
+                draw();
+            }).catch(e => {
+                console.log("Esperando interacción para audio:", e);
+            });
+        });
+
+        // --- Función de Dibujo ---
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Mesa de Madera
+            ctx.fillStyle = "#3e2723";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Vetas
+            ctx.strokeStyle = "#4e342e";
+            ctx.lineWidth = 2;
+            for(let i=0; i<canvas.height; i+=25) {
+                ctx.beginPath();
+                ctx.moveTo(0, i + Math.random()*15);
+                ctx.bezierCurveTo(300, i-10, 500, i+20, 800, i + Math.random()*15);
+                ctx.stroke();
+            }
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            // 2. Cubierta de Cuero (Base)
+            ctx.fillStyle = "#1a0a0a"; 
+            ctx.beginPath();
+            ctx.roundRect(100, 50, 600, 500, 15);
+            ctx.fill();
+            
+            // 3. Páginas (Papel Antiguo)
+            // Izquierda
+            const gradL = ctx.createLinearGradient(120, 0, centerX, 0);
+            gradL.addColorStop(0, "#dccbb1"); // Borde oscuro
+            gradL.addColorStop(1, "#fffbf0"); // Centro claro
+            ctx.fillStyle = gradL;
+            ctx.beginPath();
+            ctx.moveTo(120, 70);
+            ctx.lineTo(centerX, 70); 
+            ctx.lineTo(centerX, 530); 
+            ctx.lineTo(120, 530);
+            ctx.bezierCurveTo(115, 400, 115, 200, 120, 70); 
+            ctx.fill();
+
+            // Derecha
+            const gradR = ctx.createLinearGradient(centerX, 0, 680, 0);
+            gradR.addColorStop(0, "#fffbf0"); // Centro claro
+            gradR.addColorStop(1, "#dccbb1"); // Borde oscuro
+            ctx.fillStyle = gradR;
+            ctx.beginPath();
+            ctx.moveTo(centerX, 70);
+            ctx.lineTo(680, 70);
+            ctx.bezierCurveTo(685, 200, 685, 400, 680, 530);
+            ctx.lineTo(centerX, 530);
+            ctx.fill();
+
+            // 4. Lomo Central
+            ctx.strokeStyle = "#aa9977";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(centerX, 70);
+            ctx.lineTo(centerX, 530);
+            ctx.stroke();
+
+            // Bordes dorados de las hojas
+            ctx.strokeStyle = "#c5a059";
+            ctx.lineWidth = 3;
+            // Izq
+            ctx.beginPath();
+            ctx.moveTo(120, 70);
+            ctx.bezierCurveTo(115, 200, 115, 400, 120, 530);
+            ctx.stroke();
+            // Der
+            ctx.beginPath();
+            ctx.moveTo(680, 70);
+            ctx.bezierCurveTo(685, 200, 685, 400, 680, 530);
+            ctx.stroke();
+
+            // 5. CINTA ROJA (MODIFICADO: Ahora cae a la izquierda)
+            ctx.fillStyle = "#8a0a0a"; // Rojo sangre oscuro
+            ctx.shadowColor = "rgba(0,0,0,0.5)";
+            ctx.shadowBlur = 4;
+            ctx.beginPath();
+            // Empezamos en el lomo superior
+            ctx.moveTo(centerX - 5, 70);
+            // Bajamos hacia la izquierda
+            ctx.lineTo(centerX - 35, 450); 
+            ctx.lineTo(centerX - 20, 435); // El corte en V (pico)
+            ctx.lineTo(centerX - 5, 450);
+            // Volvemos arriba un poco más a la derecha
+            ctx.lineTo(centerX + 5, 70);
+            ctx.fill();
+            ctx.shadowBlur = 0; // Quitamos sombra para el texto
+
+            // 6. Texto
+            ctx.fillStyle = "#2b1b17";
+            ctx.textAlign = "center";
+            
+            // Texto Página Izquierda
+            ctx.font = "bold 26px 'Times New Roman'";
+            ctx.fillText("La Santa", 260, 140);
+            ctx.font = "20px 'Times New Roman'";
+            ctx.fillText("Biblia", 260, 170);
+            
+            // Adorno simple izq
+            ctx.beginPath();
+            ctx.moveTo(220, 190);
+            ctx.lineTo(300, 190);
+            ctx.strokeStyle = "#8a0a0a";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Texto Página Derecha (El Versículo)
+            ctx.font = "bold 32px 'Times New Roman'";
+            ctx.fillText(verseTitle, 540, 140);
+
+            // Cuerpo del texto
+            ctx.font = "italic 22px 'Georgia'";
+            // El ancho máximo es 260px para que no toque los bordes
+            wrapText(ctx, verseText, 540, 200, 260, 34);
+            
+            ctx.font = "bold 20px 'Georgia'";
+            ctx.fillText(footerText, 540, 490);
+
+            // Icono sutil de música sonando
+            if(isPlaying) {
+                drawMusicNote(centerX, 550);
+            }
+        }
+
+        // Función para acomodar el texto en párrafos
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            var words = text.split(' ');
+            var line = '';
+            for(var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = context.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        // Animación de nota musical flotante
+        let noteY = 0;
+        function drawMusicNote(x, y) {
+            const time = Date.now() / 300;
+            const floatY = Math.sin(time) * 5;
+            
+            ctx.fillStyle = "#d4af37";
+            ctx.font = "20px Arial";
+            ctx.fillText("♫", x, y + floatY);
+        }
+
+        function animate() {
+            if(isPlaying) {
+                draw(); // Redibujar para animar la nota
+            }
+            requestAnimationFrame(animate);
+        }
+        
+        draw();
+        animate();
+
+    </script>
+</body>
+</html>
